@@ -1,0 +1,8 @@
+[package]
+name = "g930x"
+version = "0.1.0"
+authors = ["Matan Rosenberg <matan129@gmail.com>"]
+
+[dependencies]
+libusb = "0.3"
+pcap = "0.7.0"
