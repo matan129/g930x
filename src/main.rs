@@ -5,5 +5,5 @@ extern crate pcap;
 extern crate libusb;
 
 fn main() {
-    g930x::start()
+    g930x::start();
 }
