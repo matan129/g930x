@@ -6,3 +6,4 @@ authors = ["Matan Rosenberg <matan129@gmail.com>"]
 [dependencies]
 libusb = "0.3"
 pcap = "0.7.0"
+x11-dl = "2.15.0"
