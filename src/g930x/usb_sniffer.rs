@@ -7,7 +7,8 @@ use pcap::{Active, Capture};
 const VENDOR: u16 = 0x046d;
 const PRODUCT: u16 = 0x0a1f;
 
-use g930x::packet_handler::PacketHandler;
+use g930x::packet_parser::PacketParser;
+use g930x::packet_handler::EventHandler;
 use g930x::x11_handler::X11Handler;
 
 pub fn start_monitoring() {
@@ -51,16 +52,18 @@ fn find_usbmon() -> Option<PcapDevice> {
 }
 
 fn capture_device(cap: &mut Capture<Active>, device: &UsbDevice) {
-    let bpf = format!("len > 64 and ether[11:1] = {} and ether[12:1] = {} and ether[9:1] = 1 and ether[10:1] = 0x83",
+    let bpf = format!("len = 69 and ether[11:1] = {} and ether[12:1] = {} and ether[9:1] = 1 and ether[10:1] = 0x83",
                       device.address(),
                       device.bus_number());
 
     println!("Filtering with {}", &bpf);
     cap.filter(&bpf).unwrap();
 
+    let mut parser = PacketParser::new();
     let mut handler = X11Handler::new();
 
     while let Ok(packet) = cap.next() {
-        handler.handle(&packet).unwrap();
+        let event = parser.parse(&packet).unwrap();
+        handler.handle(&event).unwrap();
     };
 }

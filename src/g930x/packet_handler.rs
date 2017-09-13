@@ -1,6 +1,6 @@
-use pcap::Packet;
+use g930x::events::G930KeyEvent;
 
-pub trait PacketHandler {
+pub trait EventHandler {
     fn new() -> Self;
-    fn handle(&mut self, packet: &Packet) -> Result<(), &'static str>;
+    fn handle(&mut self, event: &G930KeyEvent) -> Result<(), &'static str>;
 }
